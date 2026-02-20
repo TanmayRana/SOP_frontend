@@ -54,7 +54,8 @@ export interface UploadPdfResponse {
   }[];
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "https://sop-backend-1.onrender.com";
 
 class ChatService {
   private async request(endpoint: string, options: RequestInit = {}) {
@@ -115,7 +116,14 @@ class ChatService {
             );
           }
           return await retryResponse.json();
-        } catch (refreshError) {
+        } catch (refreshError: any) {
+          // If refresh fails due to expired refresh token, user needs to login again
+          if (
+            refreshError.message?.includes("Refresh token required") ||
+            refreshError.message?.includes("401")
+          ) {
+            throw new Error("Session expired. Please log in again.");
+          }
           throw new Error("Access token required");
         }
       }

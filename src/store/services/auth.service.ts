@@ -52,7 +52,8 @@ export interface UploadAvatarResponse {
   };
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "https://sop-backend-1.onrender.com";
 
 class AuthService {
   private async request(endpoint: string, options: RequestInit = {}) {
